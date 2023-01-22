@@ -1,3 +1,4 @@
+
 buildscript {
 	repositories {
 		//jcenter()
@@ -32,8 +33,9 @@ def minecraft_version = "b1.7.3"
 
 def ENV = System.getenv()
 def build_number = 22
+def timestamp = new Date().format('yyMMdd')
 
-def plasmaVersion = "${minecraft_version}-build.$build_number"
+def plasmaVersion = "${minecraft_version}-build.$build_number-$timestamp"
 
 
 repositories {
@@ -479,6 +481,30 @@ publishing {
 	}
 	repositories {
 		maven {
+			
+			url 'http://yamishdoy.com:8081/repository/maven-releases/'
+			allowInsecureProtocol = true
+			credentials{
+				username project.hasProperty('maven_username') ? project.property('maven_username') : ""
+				password project.hasProperty('maven_password') ? project.property('maven_password') : ""
+			}
+			
+				
+			
+		}
+		maven {
+
+			url 'http://yamishdoy.com:8081/repository/maven-snapshots/'
+			allowInsecureProtocol = true
+			credentials{
+				username project.hasProperty('maven_username') ? project.property('maven_username') : ""
+				password project.hasProperty('maven_password') ? project.property('maven_password') : ""
+			}
+
+
+
+		}
+		maven {
 			def mavenUrl = project.hasProperty('maven_url') ? project.property('maven_url') : ""
 			url mavenUrl
 			if(mavenUrl.startsWith("http")) {
@@ -488,6 +514,7 @@ publishing {
 				}
 			}
 		}
+
 	}
 }
 
